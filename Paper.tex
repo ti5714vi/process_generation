@@ -1,0 +1,219 @@
+\documentclass[a4paper,usenames,dvipsnames,11pt]{article}
+%\usepackage{jheppub}
+\usepackage{cite}
+\usepackage{tabularx,booktabs,multirow}
+%\usepackage[toc,page]{appendix}
+%\usepackage{authblk}
+%\usepackage{multicol}
+%\usepackage[T1]{fontenc}
+%\usepackage[english]{babel}
+%\usepackage{listings}
+%\usepackage[pdftex]{graphicx}
+\usepackage[makeroom]{cancel}
+\usepackage{amssymb}
+\usepackage{amsmath}
+%\usepackage{bbold}
+\usepackage{booktabs, cellspace, hhline}
+\usepackage{multirow}
+\usepackage{makecell}
+%\setlength\cellspacetoplimit{4pt}
+%\setlength\cellspacebottomlimit{4pt}
+\usepackage{graphicx}
+
+%\bibliographystyle{spphys}
+\usepackage{hyperref}
+%\usepackage{dsfont}
+%\usepackage[dvipsnames]{xcolor}
+%\usepackage{fancyvrb}
+%%\usepackage{textcomp}
+%\usepackage{subcaption}
+%\usepackage{slashed}
+% \usepackage{graphicx}
+\usepackage{xcolor}
+% \usepackage{calrsfs}
+%\renewcommand*{\arraystretch}{1}
+\usepackage{setspace}
+%\setstretch{1.2}
+	\addtolength{\oddsidemargin}{-.9in}
+	\addtolength{\evensidemargin}{-.9in}
+	\addtolength{\textwidth}{1.6in}
+	\addtolength{\topmargin}{-0.1in}
+	\addtolength{\textheight}{0.6in}
+%\usepackage{amssymb}
+%\usepackage{pgf}
+%\usepackage{tikz}
+%\usepackage{braket}
+%\usepackage{multicol}
+%\usepackage{doi}
+%\usepackage{tikz}
+%\usepackage{xparse}
+%\usepackage{empheq}
+%\newcommand*\widefbox[1]{\fbox{\hspace{2em}#1\hspace{2em}}}
+%\usepackage{wasysym}
+%\newcommand*{\vpointer}{\vcenter{\hbox{\scalebox{2}{\Huge\pointer}}}}
+\usepackage{colortbl}
+\setcounter{MaxMatrixCols}{15}
+
+\newcommand{\Tr}{\textrm{Tr}}
+\newcommand{\len}{\textrm{len}}
+\newcommand{\LC}{\textrm{LC}}
+\newcommand{\NLC}{\textrm{NLC}}
+\newcommand{\FC}{\textrm{FC}}
+\newcommand{\RF}[1]{{\color{red} #1}}
+\newcommand{\TV}[1]{{\textbf{\color{blue} #1} }}
+\newcommand{\pmt}{$\pm$ }
+\usepackage{authblk}
+\usepackage{mleftright}
+
+\usepackage[mathscr]{euscript}
+\newcommand{\sA}{\mathscr{A}}
+\newcommand{\sB}{\mathscr{B}}
+\newcommand{\sC}{\mathscr{C}}
+\newcommand{\sD}{\mathscr{D}}
+\newcommand{\sE}{\mathscr{E}}
+\newcommand{\sF}{\mathscr{F}}
+\newcommand{\sS}{\mathscr{S}}
+\newcommand{\sP}{\mathscr{P}}
+\newcommand{\sQ}{\mathscr{Q}}
+\newcommand{\sR}{\mathscr{R}}
+\newcommand{\sN}{\mathscr{N}}
+\newcommand{\sM}{\mathscr{M}}
+\newcommand{\sU}{\mathscr{U}}
+\newcommand{\sV}{\mathscr{V}}
+\newcommand{\sW}{\mathscr{W}}
+\newcommand{\sI}{\mathscr{I}}
+\newcommand{\sJ}{\mathscr{J}}
+\newcommand{\sAt}{\tilde{\mathscr{A}}}
+\newcommand{\sBt}{\tilde{\mathscr{B}}}
+\newcommand{\sCt}{\tilde{\mathscr{C}}}
+\newcommand{\sDt}{\tilde{\mathscr{D}}}
+\newcommand{\sEt}{\tilde{\mathscr{E}}}
+\newcommand{\sFt}{\tilde{\mathscr{F}}}
+\newcommand{\sSt}{\tilde{\mathscr{S}}}
+\newcommand{\sPt}{\tilde{\mathscr{P}}}
+\newcommand{\sQt}{\tilde{\mathscr{Q}}}
+\newcommand{\sRt}{\tilde{\mathscr{R}}}
+\newcommand{\sNt}{\tilde{\mathscr{N}}}
+\newcommand{\sMt}{\tilde{\mathscr{M}}}
+\newcommand{\sUt}{\tilde{\mathscr{U}}}
+\newcommand{\sVt}{\tilde{\mathscr{V}}}
+\newcommand{\sWt}{\tilde{\mathscr{W}}}
+\newcommand{\sIt}{\tilde{\mathscr{I}}}
+\newcommand{\sJt}{\tilde{\mathscr{J}}}
+
+\newcommand{\U}{\text{U}}
+\newcommand{\NC}{N_{\text{\tiny C}}}
+\newcommand{\SU}{\text{SU}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\dd}{\text{d}}
+
+\newcommand{\MG}{\texttt{MadGraph$\_$aMC@NLO~}}
+
+\newcommand{\gen}{gen2$\to$3}
+
+
+\renewcommand{\arraystretch}{1.3}
+
+
+\begin{document}
+
+
+\title{\textbf{Leading-colour-based unweighted event generation}}
+
+\date{}
+\author{
+Rikkert Frederix$^{1\,}$\footnote{E-mail:  \texttt{rikkert.frederix@fysik.lu.se}},
+Timea Vitos$^{2,3}$\footnote{E-mail:  \texttt{timea.vitos@physics.uu.se}},\\
+{\small\it $^{1}$ Department of Physics, Lund University,} 
+\\%
+{\small\it S\"olvegatan 14A, SE-223 62, Lund, Sweden}\\
+{\small\it $^{2}$ Department of Physics and Astronomy, Uppsala University,} 
+\\%
+{\small\it Box  516,  751 20, Uppsala, Sweden  }\\
+{\small\it $^{3}$ Institute for Theoretical Physics, ELTE  E\"otv\"os Lor\'and  University } 
+\\%
+{\small\it P\'azm\'any  P\'eter  s\'et\'any  1/A,  H-1117  Budapest,  Hungary}\\
+}
+\maketitle
+
+
+
+
+\begin{abstract}
+In this work...
+\end{abstract}
+\thispagestyle{empty}
+\vfill
+
+
+\newpage
+
+\begingroup
+\hypersetup{linkcolor=black}
+\tableofcontents
+\endgroup
+
+
+\section{Introduction}
+In preparation 
+
+\section{Method}\label{sec:method}
+
+\subsection{Overview of two-step event generation}
+
+\subsection{Re-cycling of currents among processes}
+
+\section{Results}\label{sec:results}
+
+\begin{table}[htb!]
+\begin{center}
+\begin{tabularx}{0.74\textwidth}{l c c }
+\toprule
+process & recursion-based  & diagram-based (\MG) \\
+\midrule
+$p p \rightarrow nj$ & 2 & 2 \\
+\quad $n=2$ & 2 & 2 \\
+\quad $n=3$ & 2 & 2 \\
+\quad $n=4$ & 2 & 2 \\
+\quad $n=5$ & 2 & 2 \\
+\midrule
+$p p \rightarrow e^+e^-+nj$ & 2 & 2 \\
+\quad $n=2$ & 2 & 2 \\
+\quad $n=3$ & 2 & 2 \\
+\quad $n=4$ & 2 & 2 \\
+\quad $n=5$ & 2 & 2 \\
+\midrule
+$p p \rightarrow e^+\nu_e+nj$ & 2 & 2 \\
+\quad $n=2$ & 2 & 2 \\
+\quad $n=3$ & 2 & 2 \\
+\quad $n=4$ & 2 & 2 \\
+\quad $n=5$ & 2 & 2 \\
+\midrule
+$p p \rightarrow t\overline{t}+nj$ & 2 & 2 \\
+\quad $n=2$ & 2 & 2 \\
+\quad $n=3$ & 2 & 2 \\
+\quad $n=4$ & 2 & 2 \\
+\quad $n=5$ & 2 & 2 \\
+\bottomrule
+\label{tab:proc}
+\end{tabularx}
+\end{center}
+\caption{Timing for generating $N=10^6$ events for various LHC processes with the recursion-based code, compared to convetional diagram-based event generation with \MG.}
+\end{table}
+
+
+\section{Discussion and outlook}
+
+\section*{Acknowledgements}
+
+This work was supported by the Swedish Research Council under
+contract numbers 201605996 and 202004423.  The work of T.V. is
+supported by the Swedish Research Council, project number
+VR:2023-00221. 
+
+
+
+\bibliography{Paper}{}
+\bibliographystyle{JHEP} 
+\end{document}
