@@ -91,24 +91,24 @@ for pl in range(0,2):
         if (nr == 1): tag=2
         if (nr == 2): tag=3
         if (nr == 3): tag=1
-        if (pl == 0):
+        if (pl == 1):
             ax.plot(x, timings[tag]/100000 , marker='o', color=colors[tag],linestyle='--', 
                   markersize=4, linewidth=0.4,label=labels[tag])
-        if (pl == 1):
+        if (pl == 0):
             ax.plot(x, rwgts[tag] , marker='o', color=colors[tag],linestyle='--',
                   markersize=4, linewidth=0.4,label=labels[tag])
 
 axs[0].set_xlabel(r"$n$")
 axs[1].set_xlabel(r"$n$")
-axs[0].set_ylabel(r"$f_{\mathrm{ESS}}$")
-axs[1].set_ylabel(r"$u^{\mathrm{eff}}$")
+axs[1].set_ylabel(r"$f_{\mathrm{ESS}}$")
+axs[0].set_ylabel(r"$u^{\mathrm{eff}}$")
 axs[0].xaxis.set_major_locator(MaxNLocator(integer=True))
 fig = plt.gcf()
 handles, labels = plt.gca().get_legend_handles_labels()
 order = [2, 0, 1]
 
 # add common legend
-axs[0].legend(loc="lower left",
+axs[1].legend(loc="lower left",
     ncol=1)
 
 # Improve layout

@@ -266,7 +266,7 @@ In Fig.~\ref{fig:timings} we show the main results of this work: the time to gen
 \begin{figure}[htb!]
 \begin{center}
 \includegraphics[width=\textwidth]{results/ess_plot.pdf}
-\caption{Effective sample size $f_{\text{ESS}}$ for increasing jet multiplicity (left) and the unweighting efficiency $u^{\rm eff}$ (right) for the four benchmark processes considered.\RF{Can we put unweighting efficiency on the left, and ESS on the right?)}}
+\caption{Effective sample size $f_{\text{ESS}}$ for increasing jet multiplicity (left) and the unweighting efficiency $u^{\rm eff}$ (right) for the four benchmark processes considered.}
 \label{fig:ess}
 \end{center}
 \end{figure}
@@ -275,7 +275,7 @@ In our secondary unweighting procedure, i.e.~in the reweighting of the LC events
 \begin{eqnarray}\label{eq:unw_eff}
 u^{\rm eff}_i = \frac{w_i}{w_{\rm max}},
 \end{eqnarray}
-where $w_i$ is given by the reweight factor, $r^{\LC\to\FC}$. The fraction of events retained in this procedure is the secondary unweighted efficiency\footnote{Contrary to the primary unweighting, we allow for no overweight fraction since we are dealing with much smaller samples of weighted events.}. In Fig.~\ref{fig:ess} (right \RF{left}) we plot the secondary unweighting efficiency for the processes considered. This efficiency remains above approximately 60\% for all processes and multiplicities, indicating on average a sample size of roughly 1.7 larger at LC accuracy to generate the required number of FC events.
+where $w_i$ is given by the reweight factor, $r^{\LC\to\FC}$. The fraction of events retained in this procedure is the secondary unweighted efficiency\footnote{Contrary to the primary unweighting, we allow for no overweight fraction since we are dealing with much smaller samples of weighted events.}. In Fig.~\ref{fig:ess} (left) we plot the secondary unweighting efficiency for the processes considered. This efficiency remains above approximately 60\% for all processes and multiplicities, indicating on average a sample size of roughly 1.7 larger at LC accuracy to generate the required number of FC events.
 
 
 %The critical parts to such an unweighting procedure is the sample size used for the sampling of the maximum weight, and how to treat the cases when an event weight exceeds the maximum weight. One possibility is to discard the events with larger event weights, which is a decent approximation when this fraction is not too large. Another possibility is to perform an updating of the maximum weight, or to use a neural network based approach for improving the efficiency~\cite{Danziger:2021eeg,Gao:2020zvv}. In this work, we opt for \TV{Fill in}
