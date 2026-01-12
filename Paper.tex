@@ -140,7 +140,7 @@ Timea Vitos$^{2,3}$\footnote{E-mail:  \texttt{timea.vitos@physics.uu.se}},\\
 
 
 \begin{abstract}\noindent
-The scaling of event generation with particle number is a challenge in particle physics. In this work, we target the efficient generation of realistic LHC processes with increasing number of jets in the final state. The main idea relies on a previously developed two-step approach, in which unweighted events are generated at leading-colour accuracy, and then in a second step reweighted to full-colour accuracy, thus remaining efficient in the integration step, but capturing the full-colour accuracy in the hard scattering process. We compare the computation time for four benchmark LHC processes: multi-jet, $t\bar{t}$ plus jets, $ZZ$ plus jets and Drell-Yan plus jets. The results show that the combined timing of generating a fixed number of unweighted events at full-colour accuracy is moderate and scales exponentially with particle multiplicity, vastly outsourcing the factorial growth in  conventional approaches.
+The scaling of event generation with particle number is a challenge in particle physics. In this work, we target the efficient generation of realistic LHC processes with increasing number of jets in the final state. The main idea relies on a previously developed two-step approach, in which unweighted events are generated at leading-colour accuracy, and then in a second step reweighted to full-colour accuracy, thus remaining efficient in the integration step, but capturing the full-colour accuracy in the hard scattering process. We compare the computation time for four benchmark LHC processes: multi-jet, $t\bar{t}$ plus jets, $ZZ$ plus jets and Drell-Yan plus jets. The results show that the combined timing of generating a fixed number of unweighted events at full-colour accuracy is moderate and scales exponentially with the particle multiplicities we consider, vastly outsourcing the factorial growth in  conventional approaches.
 \end{abstract}
 \thispagestyle{empty}
 \vfill
@@ -155,11 +155,11 @@ The scaling of event generation with particle number is a challenge in particle 
 
 
 \section{Introduction}
-The current procedure for precise predictions and measurements of particle physics collisions relies heavily on computational simulations. Although the general-purpose collision simulators have been around for 20-30 years~\cite{Sjostrand:2014zea,Bahr:2008pv,Gleisberg:2008ta}, there have been numerous developments the past decades targeting various aspects of the computations, both in the width of the targeted processes and in their computational efficiencies. One still standing problem for event generators is the multiplicity handling: the computations are too slow or not even feasible when the final state multiplicity (often in terms of jets) in the collisions in the hard scattering reaches a (mostly algorithm-dependent) limit. The alternative has long been the usage of parton showers for the generation of multiple jets, with the obvious limitation of the range of validity in the soft and collision regions.
+The current procedure for precise predictions and measurements of particle physics collisions relies heavily on computational simulations. Although the general-purpose collision simulators have been around for 20-30 years~\cite{Sjostrand:2014zea,Bahr:2008pv,Gleisberg:2008ta}, there have been numerous developments the past decades targeting various aspects of the computations, both in the width of the targeted processes and in their computational efficiencies. One still standing problem for event generators is the multiplicity handling: the computations are too slow or not even feasible when the final state multiplicity (often in terms of jets) in the collisions in the hard scattering reaches a (mostly algorithm-dependent) limit. The alternative has long been the usage of parton showers for the generation of multiple jets, with the obvious limitation of the range of validity to the soft and collision regions.
 
-The main computational challenge for these multi-jet events is due to the complex structure of quantum chromodynamics (QCD). The integrand in the computation of the cross section grows factorially with th external particle number, resulting in a highly inefficient integration due to the increasing integrand evaluation time. In conventional tools, this results in a break-down of the execution feasibility of the computation at some multiplicity numbers. Many works have contributed to improvements in this area, including the improvement of the phase-space integration~\cite{Lepage:1977sw,Lepage:2020tgj,vanHameren:2007pt,Kleiss:1994qy,Ohl:1998jn,Maltoni:2002qb,Papadopoulos:2000tt,Krauss:2001iv,Kilian:2007gr,Gleisberg:2008fv,Alwall:2014hca,Sherpa:2019gpd}, sampling of colour and helicity configurations~\cite{Berends:1987me,Caravaglios:1995cd,Caravaglios:1998yr,Draggiotis:1998gr,Mangano:2002ea,Duhr:2006iq,Gleisberg:2008fv,Mattelaer:2021xdr}, and recursion relations instead of conventional diagram-based computation of the matrix-elements~\cite{Berends:1987me,Britto:2004ap}.  Another approach is the reduction of the integrand by introducing a truncation in the colour expansion, either at leading-colour (LC), leading to a linear scaling in the number of terms with the external multiplicity, or at the next-to-leading colour (NLC) order yielding a polynomial scaling \cite{Frederix:2021wdv,Badger:2012pg}. There have been works targeting the efficient event generation of high-multiplicity events, including Pepper~\cite{Bothmann:2023gew} and COMIX~\cite{Gleisberg:2008fv}. 
+The main computational challenge for these multi-jet events is due to the complex structure of quantum chromodynamics (QCD). The integrand in the computation of the cross section grows factorially with the external particle number \RF{strictly speaking not true: \cite{Bolinder:2025gbj}}, resulting in a highly inefficient integration due to the increasing integrand evaluation time. In conventional tools, this results in a break-down of the execution feasibility of the computation at some multiplicity numbers. Many works have contributed to improvements in this area, including the improvement of the phase-space integration~\cite{Lepage:1977sw,Lepage:2020tgj,vanHameren:2007pt,Kleiss:1994qy,Ohl:1998jn,Maltoni:2002qb,Papadopoulos:2000tt,Krauss:2001iv,Kilian:2007gr,Gleisberg:2008fv,Alwall:2014hca,Sherpa:2019gpd}, sampling of colour and helicity configurations~\cite{Berends:1987me,Caravaglios:1995cd,Caravaglios:1998yr,Draggiotis:1998gr,Mangano:2002ea,Duhr:2006iq,Gleisberg:2008fv,Mattelaer:2021xdr}, and recursion relations instead of conventional diagram-based computation of the matrix-elements~\cite{Berends:1987me,Britto:2004ap}.  Another approach is the reduction of the integrand by introducing a truncation in the colour expansion, either at leading-colour (LC), leading to a linear scaling in the number of terms with the external multiplicity, or at the next-to-leading colour (NLC) order yielding a polynomial scaling \cite{Frederix:2021wdv,Badger:2012pg}. There have been works targeting the efficient event generation of high-multiplicity events, including COMIX~\cite{Gleisberg:2008fv} and Pepper~\cite{Bothmann:2023gew}. 
 
-One possible solution to the problem of increasing complexity in event generation was presented in our previous work Ref.~\cite{Frederix:2024uvy}. We suggest there a two-step approach for generating events at leading-order (tree-level) in the Standard Model coupling expansion. The first step constitutes a conventional phase-space integration, in which the amplitudes are computed with off-shell recursion relations~\cite{Berends:1987me,Britto:2004ap}, and the precision in the colour expansion is truncated in the first order, the LC approximation. This truncation results in a much more efficient evaluation of the matrix-elements, as the factorial complexity is reduced to a linear complexity in the colour sum. In this manner, unweighted LC events are generated, covering all of the targeted phase-space, following a LC integrand in the importance sampling. In the second step, these unweighted events are passed through a reweighting module, upon which the full-colour (FC) matrix-elements are evaluated for each event, and with a secondary unweighting, the new set of FC events are obtained. 
+One possible solution to the problem of increasing complexity in event generation was presented in our previous work Ref.~\cite{Frederix:2024uvy}. We suggest there a two-step approach for generating events at leading-order (tree-level) in the Standard Model coupling expansion. The first step constitutes a conventional phase-space integration, in which the amplitudes are computed with off-shell recursion relations~\cite{Berends:1987me,Britto:2004ap}, and the precision in the colour expansion is truncated in the first order, the LC approximation. This truncation results in a much more efficient evaluation of the matrix-elements, as the factorial complexity is reduced to a exponential complexity. In this manner, unweighted LC events are generated, covering all of the targeted phase-space, following a LC integrand in the importance sampling. In the second step, these unweighted events are passed through a reweighting module, upon which the full-colour (FC) matrix-elements are evaluated for each event, and with a secondary unweighting, the new set of FC events are obtained. 
 
 
 In this work, we present results for hadronic collisions, by properly dealing with partonic sub-processes in an efficient manner in the standalone, Fortran-based computer code which we dub AmpliCol. We present results for four benchmark processes and compare the scaling behaviours for increasing jet multiplicity. The paper is structured in the following way: in Section~\ref{sec:method} we present the methodology by first briefly summarising the two-step event generation and discussing the phase-space integration. In Section~\ref{sec:results} we present our findings, and finally summarise and present an outlook in Section~\ref{sec:outlook}.
@@ -172,23 +172,23 @@ The methodology of the present work follows closely that presented in Ref.~\cite
 
 \subsection{Overview of the two-step event generation}
 
-In the phase-space integral of the cross section, the main bottleneck is the highly complex and peaked matrix-element in the integrand. In the following we omit the flux factor and additional factors coming from colour and helicity averages, which are obvious overall factors not playing a crucial role in the efficiency of the integration. Using the colour decomposition of the amplitude~\cite{Mangano:1990by,Berends:1987me}, the integral can be rewritten as a double sum over dual amplitudes $\A_i$ and corresponding colour factors $C_{ij}$ as
+In the phase-space integral of the cross section, the main bottleneck is the highly complex and peaked matrix-element in the integrand. Suppressing the parton density functions, flux factor and additional factors coming from colour and helicity averages, the integral can be rewritten as a double sum over dual amplitudes $\A_i$ and corresponding colour factors $C_{ij}$~\cite{Mangano:1990by,Berends:1987me}, as
 \begin{align}\label{eq.LC}
 \sigma_{\rm FC}\sim \int |\M|^2\dd\Phi = \int \sum_{i,j} \A_i C_{ij}\A^*_j \dd\Phi,
 \end{align}
-where the $i,j$ inices label colour orderings of the final state (QCD) particles. The only terms contributing at leading-colour in this colour sum are those with identical colour order, $i=j$ and so the LC-truncated cross section becomes
+where the $i,j$ indices label colour orderings of the external QCD particles. The only terms contributing at leading-colour in this colour sum are those with identical colour order, $i=j$ and so the LC-truncated cross section becomes
 \begin{align}
 \sigma_{\rm LC}\sim \int \sum_i \A_i C_{ii}\A^*_i
 \dd\Phi = \sum_{i} C_{ii} \int |\A_i|^2 \dd\Phi.
 \end{align}
-This rewriting of the cross section is used in the proposed algorithm for the integration step: the integrand is approximated at the LC accuracy, as the square of the dual amplitudes, using multi-channeling for each of the orderings. This alleviates a fast integration evaluation and efficient phase-space integration. The obtained events which pass the generation cuts are unweighted, leading to the sample of LC unweighted events. 
+This rewriting of the cross section is used in the proposed algorithm for the integration step: the integrand is approximated at the LC accuracy, as the square of the dual amplitudes, using multi-channeling for each of the orderings. This alleviates a fast integrand evaluation and efficient phase-space integration. The obtained events which pass the generation cuts are unweighted, leading to the sample of LC unweighted events. 
 
 In the second step, these LC events are passed through a reweighting algorithm, in which each event is multiplied with the reweight factor
 \begin{equation}\label{eq.rwfactor}
 r^{\LC\to\FC}=\frac{|\M|^2}{\sum_{i} C_{ii}
   |\A_i|^2},
 \end{equation}
-which is a correction factor for obtaining the FC weight. This correction factor is evaluated using the specific kinematics and helicity of each event, in this way obtaining a FC-accurate (weighted) event sample. Finally, a secondary unweighting is performed, resulting in the combined FC event generation which finalizes the two-step algorithm for the efficient event generation.
+which is a correction factor for obtaining the FC weight. This correction factor is evaluated using the specific kinematics and helicity of each event, in this way obtaining a FC-accurate (weighted) event sample. Finally, a secondary unweighting can be performed, resulting in the FC event generation which finalizes the two-step algorithm for the efficient event generation.
 
 \subsection{Phase-space integration}
 
@@ -196,7 +196,7 @@ For the standard integration of a generic partonic process
 \begin{equation}
 a b \rightarrow 1 2 \ldots n
 \end{equation}
-we use the phase-space parametrisation introduced in Ref.~\cite{Byckling:1969luw} and used in Ref.~\cite{Frederix:2024uvy}. This parametrisation is based on a $2\rightarrow 3$ building block of consecutive momenta generations, following the colour ordering of the particles and the maximally-helicity-violating (MHV) amplitudes~\cite{Parke:1986gb}. The phase space integration is split to generate two sets of particles: those between particle $a$ and $b$, and those between $b$ and $a$. The particle kinematics in the two sets are then generated in a way that follows the peak structure of the MHV amplitudes and hence results in an efficient phase-space sampling.
+we use the phase-space parametrisation introduced in Ref.~\cite{Byckling:1969luw} and used in Ref.~\cite{Frederix:2024uvy}. This parametrisation is based on a $2\rightarrow 3$ building block of consecutive momenta generations, following the colour ordering of the particles and maps all relavant variables of the maximally-helicity-violating (MHV) amplitudes~\cite{Parke:1986gb} to integration variables. The phase space integration is split to generate two sets of particles: those between particle $a$ and $b$, and those between $b$ and $a$. The particle kinematics in the two sets are then generated in a way that follows the peak structure of the MHV amplitudes, and therefore also for helicity summed amplitudes, and hence results in an efficient phase-space sampling.
 
 For the full LHC process including hadrons and jets, all possible subprocesses (treating the $b$-quark in the requested flavour-scheme) contributing to the requested collision are grouped in common phase-space order blocks. The given colour order of each block is then passed the phase-space generation described in the above, generating the kinematics in the specified order for the particles. The kinematics is then assigned for the different subprocesses in the block. With this method, one reduces overflow of phase-space samplings, improving further the efficiency of the algorithm.
 
@@ -210,7 +210,6 @@ The dual amplitudes are computed using the off-shell recursion relations, includ
 
 
 
-
 \section{Results}\label{sec:results}
 
 We use the above method for the event generation of four benchmark LHC processes at center-of-mass energy of $\sqrt{s} = 14$ TeV: 
@@ -219,29 +218,23 @@ We use the above method for the event generation of four benchmark LHC processes
 p p &\rightarrow nj,\\
 pp &\rightarrow t\overline{t}+(n-2)j, \\
 pp &\rightarrow ZZ+(n-2)j, \\
-pp &\rightarrow e^+e^-+(n-2)j,
+pp &\rightarrow e^+e^-+(n-1)j,
 \end{split}
 \end{eqnarray}
 with the multiplicity number $n$ varied in the range $n \in [2,6]$. In all processes we use a 5-flavour scheme and set the following cuts on the jets, whenever applicable:
 \begin{eqnarray}
 p_T(j) > 30 \text{ GeV} \quad,\quad \eta(j) < 6.0 \quad,\quad \Delta R(j_1,j_2) > 0.4.
 \end{eqnarray}
-In the Drell-Yan process, a cut on the leptonic invariant mass of $m(e^+e^-)>50$ GeV is used in order to avoid the photon-mediated singularity, and no further cuts on the leptons are placed. While it bears no significant on the outcome of the analysis, the PDF set used is the NNPDF23nlo set ~\cite{Ball:2012cx}. 
-
-We perform all the computations on a \TV{FIll in} CPU machine and extract timings from the runs. As the exact timings will depend on the exact platform and computational circumstances, the emphasis on the timings is to capture the scaling behaviour for increasing multiplicity number, rather than the absolute values.
+In the Drell-Yan process, a cut on the leptonic invariant mass of $m(e^+e^-)>50$ GeV is used in order to avoid the photon-mediated singularity, and no further cuts on the leptons are placed. We set the renoralisation and factorisation scales equal to the $Z$ boson mass, and use the NNPDF23nlo set~\cite{Ball:2012cx} for the initial state parton distributions. \RF{Results for single PS points are cross-checked against madgraph where possible.} We perform all the computations on a single core of an Intel i7-8700K CPU running at 3.70GHz and extract the evaluation time, focussing on how the runtime scales with the multiplicity number $n$.
 
 
-\subsection{Computational time}
+%\subsection{Runtime analysis}
 
-The total time for the generation of unweighted events at FC accuracy in the two-step approach consists of
+The total time $t_{\rm tot}$ for the generation of unweighted events at FC accuracy in the two-step approach consists of
 \begin{eqnarray}
-t_{\rm tot} = t_{\rm int} + t_{\rm rwgt}
+t_{\rm tot} = t_{\rm int} + t_{\rm rwgt}\quad .
 \end{eqnarray}
-which is the sum of the integration time $t_{\rm int}$ for the generation of unweighted LC accurate events, and the time for the reweighting $t_{\rm rwgt}$ (plus secondary unweighting) required to adjust the weights such that they capture the FC corrections. One must take into consideration the loss of events in the secondary unweighting step and generate the LC event number accordingly, such that the final number of FC events is the required event sample. We consider this fractional loss in the timings of the total time. In the following we compare these various times for the different processes.
-
-In Fig.~\ref{fig:timings} the timings are shown for the four sample benchmark processes for varying jet multiplicity. The plot includes the total time $t_{\rm ott}$ required to generate $N=10^5$ unweighted events at FC accuracy (blobs with error bars). The plot also shows separately the reweighting time $t_{\rm rwgt}$ for each of the processes (triangles), showing clearly that this step is negligible in the fraction of the total time for all processes. The plot shows in addition a fit exponential curve on the total time values with respect to the multiplicity $n$. The fit indicates an exponential growth for all processes with a base of around 5 (with a slight variance between process types, each shown in the figure). The error bars for the total timings are extracted as envelopes from 10 independent computations with different random seeds of the process in question.
-
-In the upper plots of Fig.~\ref{fig:3qq} \TV{Update values!} we show the absolute timing for generating $N=10^5$ events for the two QCD-only benchmark processes, the pure multi-jet process and top-quark-pair associated multi-jet process, comparing the time for the computation including three-quark-line subprocesses (darker dots) and the computation timing without the inclusion of these subprocesses. In the lower plots of Fig.~\ref{fig:3qq} \TV{Update values!} we verify the already known results that the cross section contribution from these subprocesses is on the percent level, indicating that the contribution of these subprocesses have smaller impact than the perturbtive expansion precision and hence could be omitted without obtaining results outside of the systematic errors of the computation. For this reason, these three-quark-line processes are generally not included in the reweighting step.
+Here, the integration time $t_{\rm int}$ is for the generation of unweighted LC accurate events. This includes the setup of the integration grids, finding the upper bound of the event weights, and the primary unweighting of the generated events. At most a fraction of 0.1\% of the cross section, the so-called overweight fraction see e.g.~\cite{Bothmann:2025lwg}, is truncated to improve unweighting efficiency, but typically this number is between 0.05 to 0.07\% for the results presented in this work. The time for reweighting $t_{\rm rwgt}$ (plus secondary unweighting) is required to adjust the weights such that they capture the FC corrections. One must take into consideration the loss of events in the secondary unweighting step and generate the LC event number accordingly, such that the final number of FC events is the required event sample. We consider this fractional loss in the timings of the total time. In the following we compare these various times for the different processes.
 
 
 \begin{figure}[htb!]
@@ -251,54 +244,72 @@ In the upper plots of Fig.~\ref{fig:3qq} \TV{Update values!} we show the absolut
 \label{fig:timings}
 \end{figure}
 
-\begin{figure}[htb!]
-\begin{center}
-\includegraphics[width=0.7\textwidth]{results/3qq_plot.pdf}
-\caption{Timing of the LC event generation for $10^5$ events for the two pure-QCD benchmark processes, with (darker markers) and without (lighter markers) including the three-quark-line subprocesses (upper plots). The ratio of the cross section for the two processes with  (left) and without (right) the three-quark-line processes (lower). \TV{Add legend}}
-\label{fig:3qq}
-\end{center}
-\end{figure}
+In Fig.~\ref{fig:timings} we show the main results of this work: the time to generate $N=10^5$ unweighted events at FC accuracy on a single CPU core. It is shown for the four sample benchmark processes for varying jet multiplicity. The plot includes the total time $t_{\rm tot}$ required to generate these events (blobs with error bars) and also separately the reweighting time $t_{\rm rwgt}$ for each of the processes (triangles), showing clearly that this step is negligible in the fraction of the total time for all processes considered. In addition, a fit of an exponential curve is made to the total time with respect to the multiplicity $n$. The fit indicates an exponential growth for all processes with a base of around 5 (with a slight variance between process types, each shown in the figure). 
+
+%In the upper plots of Fig.~\ref{fig:3qq} \TV{Update values!} we show the absolute timing for generating $N=10^5$ events for the two QCD-only benchmark processes, the pure multi-jet process and top-quark-pair associated multi-jet process, comparing the time for the computation including three-quark-line subprocesses (darker dots) and the computation timing without the inclusion of these subprocesses. In the lower plots of Fig.~\ref{fig:3qq} \TV{Update values!} we verify the already known results that the cross section contribution from these subprocesses is on the percent level, indicating that the contribution of these subprocesses have smaller impact than the perturbtive expansion precision and hence could be omitted without obtaining results outside of the systematic errors of the computation. For this reason, these three-quark-line processes are generally not included in the reweighting step.
 
 
-\subsection{Efficiency evaluation}
+%\begin{figure}[htb!]
+%\begin{center}
+%\includegraphics[width=0.7\textwidth]{results/3qq_plot.pdf}
+%\caption{Timing of the LC event generation for $10^5$ events for the two pure-QCD benchmark processes, with (darker markers) and without (lighter markers) including the three-quark-line subprocesses (upper plots). The ratio of the cross section for the two processes with  (left) and without (right) the three-quark-line processes (lower). \TV{Add legend}}
+%\label{fig:3qq}
+%\end{center}
+%\end{figure}
 
-The unweighting procedure as usual follows the steps of first finding the maximum weight among a sample of events $w_{\rm max}$ and then sampling from the pool of events with the acceptance probability 
-\begin{eqnarray}\label{eq:unw_eff}
-u^{\rm eff}_i = \frac{w_i}{w_{\rm max}},
-\end{eqnarray} 
-with the total unweighting efficiency for a set of events computed as the average of these individual efficiencies, $u^{\rm eff} = \frac{1}{N} \sum_i^N u_i^{\rm eff}$. The critical parts to such an unweighting procedure is the sample size used for the sampling of the maximum weight, and how to treat the cases when an event weight exceeds the maximum weight. One possibility is to discard the events with larger event weights, which is a decent approximation when this fraction is not too large. Another possibility is to perform an updating of the maximum weight, or to use a neural network based approach for improving the efficiency~\cite{Danziger:2021eeg,Gao:2020zvv}. In this work, we opt for \TV{Fill in}
+%\subsection{Secondary unweighting efficiency}
 
-Another way of assessing the efficiency of the unweighting procedure for a sample with $N$ events with weights $w_i$ is by evaluating the Kish effective sample size (ESS), defined by
-\begin{eqnarray}
-f_{\rm ESS} = \frac{\left(\sum_i^N w_i\right)^2}{\sum_i^N w_i^2}.
-\end{eqnarray}
-This measure evaluates the spread of the weights, reaching a value of 1 for a sample of unweighted events (equal weights). A few outliers from an otherwise almost equal-weight event sample does not impact this effective size greatly, while one outlier will greatly decrease the unweighting efficiency defined in Fig.~\ref{eq:unw_eff}. 
+
+
+\RF{Move the following to an appendix?}
 
 \begin{figure}[htb!]
 \begin{center}
 \includegraphics[width=\textwidth]{results/ess_plot.pdf}
-\caption{Effective sample size $f_{\text{ESS}}$ for increasing jet multiplicity (left) and the unweighting efficiency $u^{\rm eff}$ (right) for the four benchmark processes considered.}
+\caption{Effective sample size $f_{\text{ESS}}$ for increasing jet multiplicity (left) and the unweighting efficiency $u^{\rm eff}$ (right) for the four benchmark processes considered.\RF{Can we put unweighting efficiency on the left, and ESS on the right?)}}
 \label{fig:ess}
 \end{center}
 \end{figure}
 
-When considering event sampling and unweighting, it is important to note that one can make minor modifications to the unweighting procedure by either vetoing a certain fraction of events with weights extending beyond the maximum weight used for the unweighting, or doing an on-the-fly updating of the maximum weight. In both of these solutions, one should keep in mind that if the fraction of events which are outliers in the unweighting is small, then the procedure is in essence unaffected. Hence, the ESS might reveal information on how suitable the event sample is for doing an unweighting with such small modifications for obtaining a still reasonable result. 
+In our secondary unweighting procedure, i.e.~in the reweighting of the LC events to FC, we follow the usual procedure of first finding the maximum weight among a sample of events $w_{\rm max}$ and then sampling from the pool of events with the acceptance probability 
+\begin{eqnarray}\label{eq:unw_eff}
+u^{\rm eff}_i = \frac{w_i}{w_{\rm max}},
+\end{eqnarray}
+where $w_i$ is given by the reweight factor, $r^{\LC\to\FC}$. The fraction of events retained in this procedure is the secondary unweighted efficiency\footnote{Contrary to the primary unweighting, we allow for no overweight fraction since we are dealing with much smaller samples of weighted events.}. In Fig.~\ref{fig:ess} (right \RF{left}) we plot the secondary unweighting efficiency for the processes considered. This efficiency remains above approximately 60\% for all processes and multiplicities, indicating on average a sample size of roughly 1.7 larger at LC accuracy to generate the required number of FC events.
 
-We show the ESS values for the four benchmark processes for varying multiplicity $n$ in the left-hand plot of Fig.~\ref{fig:ess}. Even for the highest multiplicities at $n=6$, all of these processes remain at an ESS value of beyond 98\%, with the multi-jet processes scaling the best with the multiplicity increase. As a comparison, we show also the total secondary unweighting efficiency $u^{\rm eff}$ in the right-hand plot of Fig.~\ref{fig:ess}. This efficiency remains also above 60\% for all processes and multiplicities, indicating on average a sample size of roughly 1.7 larger at LC accuracy to generate the required number of FC events. 
+
+%The critical parts to such an unweighting procedure is the sample size used for the sampling of the maximum weight, and how to treat the cases when an event weight exceeds the maximum weight. One possibility is to discard the events with larger event weights, which is a decent approximation when this fraction is not too large. Another possibility is to perform an updating of the maximum weight, or to use a neural network based approach for improving the efficiency~\cite{Danziger:2021eeg,Gao:2020zvv}. In this work, we opt for \TV{Fill in}
+
+Even though the secondary unweighting efficiency is large, one may consider keeping the weighted events instead. A way of assessing the statistical power of a weighted sample of size $N$ with weights $w_i$ is by evaluating the Kish effective sample size (ESS), defined by
+\begin{eqnarray}
+f_{\rm ESS} = \RF{\frac{1}{N}?}\frac{\left(\sum_{i=1}^N w_i\right)^2}{\sum_{i=1}^N w_i^2}.
+\end{eqnarray}
+This measure evaluates the spread of the weights, reaching a value of 1 for a sample of unweighted events (equal weights). A few outliers from an otherwise almost equal-weight event sample do not impact this effective size greatly, while one outlier will greatly decrease the unweighting efficiency defined in eq.~\ref{eq:unw_eff}. We show the ESS values for the four benchmark processes for varying multiplicity $n$ in the left(\RF{right})-hand plot of Fig.~\ref{fig:ess}. Even for the highest multiplicities at $n=6$, all of these processes remain at an ESS value of beyond 98\%, with the multi-jet processes scaling the best with the multiplicity increase. This suggests that keeping the weighted events and thereby reducing the effective sample size by less than 2\% significantly outperforms the unweighting the events, except in cases where post-processing (parton shower, hadronisation, detector simulation, etc.) is particularly time consuming. 
+
+%When considering event sampling and unweighting, it is important to note that one can make minor modifications to the unweighting procedure by either vetoing a certain fraction of events with weights extending beyond the maximum weight used for the unweighting, or doing an on-the-fly updating of the maximum weight. In both of these solutions, one should keep in mind that if the fraction of events which are outliers in the unweighting is small, then the procedure is in essence unaffected. Hence, the ESS might reveal information on how suitable the event sample is for doing an unweighting with such small modifications for obtaining a still reasonable result. 
+
 
 
 \section{Discussion and outlook}\label{sec:outlook}
 
-In this work we presented the program AmpliCol, which performs the two-step event generation of high-multiplicity processes, with an exponential increase in computation time rather than the conventional factorial growth with conventional event generators. We illustrated the mild increase in computation time for four benchmark processes with increasing multiplicities, portraying the possiblity of generating multiplicities which were currently unachievable with conventional tools.  The AmpliCol program will in the near future be interfaced with the MadGraph5\_aMC@NLO user-friendly matrix-element generator~\cite{Alwall:2014hca}, lifting hte possibility for the automated computation of multi-jet processes in the framework, reaching multiplicities which are currently out of reach.  
+In this work we presented the program AmpliCol, which performs the two-step event generation of high-multiplicity processes, with an exponential increase in computation time (at least up to moderately high multiplicities) rather than the conventional factorial growth with conventional event generators. We illustrated the computation time for four benchmark processes with various multiplicities. The AmpliCol program will in the near future be interfaced with the MadGraph5\_aMC@NLO user-friendly matrix-element generator~\cite{Alwall:2014hca}, improving the automated computation of multi-jet processes, reaching multiplicities which are currently out of reach within that framework.
 
 The current version of the program works at tree-level in the perutrbative expansion, and we leave the extension of the code for NLO computations for future work. 
+
+\RF{Three quark-line processes.}
+
+\RF{Possibilities for multi-core/GPU etc.}
+
+\RF{Possibilities for ML-based phase-space generation}
+
+\RF{Possibilities for ML-based reweighting, cite our work \cite{Villadamigo:2025our}, or other methods (multiplet+recursion) to improve this step \cite{Bolinder:2025gbj}}
 
 
 \section*{Acknowledgements}
 
-This work is supported by the Swedish Research Council under
-contract numbers 201605996 and 202004423.  The work of T.V. is
-supported by the Swedish Research Council, project number
+The work of R.F.~is supported by the Swedish Research Council under
+project number 202004423.  The work of T.V.~is
+supported by the Swedish Research Council under project number
 VR:2023-00221. \TV{Update if needed}
 
 
