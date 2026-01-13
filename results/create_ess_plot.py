@@ -12,6 +12,8 @@ plt.rcParams.update({'font.size': 16})
 
 # range of multiplicity
 x = [2,3,4,5,6]
+x2 = [2,3,4,5,6,7]
+
 
 with open("results.dat") as f:
     lines = f.readlines()[3:]  # skip first 3 lines
@@ -87,15 +89,18 @@ ax=axs
 for pl in range(0,2):
     ax=axs[pl]
     for nr in num_values:
-        if (nr == 0): tag=0
+        xp=x
+        if (nr == 0): 
+            tag=0
+            xp=x2
         if (nr == 1): tag=2
         if (nr == 2): tag=3
         if (nr == 3): tag=1
         if (pl == 1):
-            ax.plot(x, timings[tag]/100000 , marker='o', color=colors[tag],linestyle='--', 
+            ax.plot(xp, timings[tag]/100000 , marker='o', color=colors[tag],linestyle='--', 
                   markersize=4, linewidth=0.4,label=labels[tag])
         if (pl == 0):
-            ax.plot(x, rwgts[tag] , marker='o', color=colors[tag],linestyle='--',
+            ax.plot(xp, rwgts[tag] , marker='o', color=colors[tag],linestyle='--',
                   markersize=4, linewidth=0.4,label=labels[tag])
 
 axs[0].set_xlabel(r"$n$")

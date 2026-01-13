@@ -11,6 +11,7 @@ plt.rcParams.update({'font.size': 14})
 
 # range of multiplicity
 x = [2,3,4,5,6]
+x2 = [2,3,4,5,6,7]
 
 with open("results.dat") as f:
     lines = f.readlines()[3:]  # skip first 3 lines
@@ -70,10 +71,13 @@ log_timings=copy.copy(timings)
 log_x = [math.log(r) for r in x]
 for i in range(0,len(timings)):
     log_timings[i]=[math.log(r) for r in timings[i]]
-    params, _ = curve_fit(lin_model, x, log_timings[i], p0=(1, 1.1))
+    xf=x
+    if (i==0): xf=x2
+    params, _ = curve_fit(lin_model, xf, log_timings[i], p0=(1, 1.1))
     C_fit, b_fit = params
     fit_all.append([C_fit,b_fit])
 x_fit = np.linspace(2,6, 200)
+x_fit2 = np.linspace(2,7, 200)
 
 # latex
 plt.rcParams.update({
@@ -98,18 +102,24 @@ for idx in range(num_subplots):
     i = idx // 2  # row
     j = idx % 2   # column
     ax = axs[i, j]
-    ax.set_xticks([2, 3, 4, 5, 6])
-    if (idx == 0): tag=0
+    ax.set_xticks([2, 3, 4, 5, 6, 7])
+    xp = x
+    x_fitp=x_fit
+    if (idx == 0): 
+        tag=0
+        ax.set_xticks([2, 3, 4, 5, 6, 7])
+        xp = x2
+        x_fitp=x_fit2
     if (idx == 1): tag=2
     if (idx == 2): tag=3
     if (idx == 3): tag=1
     s[idx] = format(math.exp(fit_all[tag][1]), ".1f")
     label="Fit $t \\sim$"+"$b^n$"
-    ax.errorbar(x, timings[tag], yerr=errors[tag].T, marker='o', color=colors[idx],linestyle='', markersize=marksize,capsize=3, label="Total time")
-    ax.plot(x,      rwgts[tag], marker='^', color=shade1[idx], linestyle='',markersize=marksize, label="Reweight time")
+    ax.errorbar(xp, timings[tag], yerr=errors[tag].T, marker='o', color=colors[idx],linestyle='', markersize=marksize,capsize=3, label="Total time")
+    ax.plot(xp,      rwgts[tag], marker='^', color=shade1[idx], linestyle='',markersize=marksize, label="Reweight time")
     ax.set_yscale('log')
     ax.tick_params(direction="in")
-    ax.plot(x_fit, exp_model(x_fit, fit_all[tag][0], fit_all[tag][1]),linestyle='-',color=colors[idx], label=label, linewidth=0.7)
+    ax.plot(x_fitp, exp_model(x_fitp, fit_all[tag][0], fit_all[tag][1]),linestyle='-',color=colors[idx], label=label, linewidth=0.7)
 
 handle = ax.errorbar(
     [], [], yerr=[0.3],
