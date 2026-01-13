@@ -168,45 +168,59 @@ In this work, we present results for hadronic collisions, by properly dealing wi
 
 \section{Method}\label{sec:method}
 
-The methodology of the present work follows closely that presented in Ref.~\cite{Frederix:2024uvy}. In the following we present the brief summary of the method and highlight the main new features. We refer the interested reader to the mentioned reference for further details of the method.
+The methodology of the present work follows closely that presented in Ref.~\cite{Frederix:2024uvy}. In the following we present a brief summary of the method and highlight the main new features. We refer the interested reader to the mentioned reference for further details of the method.
 
 \subsection{Overview of the two-step event generation}
 
-In the phase-space integral of the cross section, the main bottleneck is the highly complex and peaked matrix-element in the integrand. Suppressing the parton density functions, flux factor and additional factors coming from colour and helicity averages, the integral can be rewritten as a double sum over dual amplitudes $\A_i$ and corresponding colour factors $C_{ij}$~\cite{Mangano:1990by,Berends:1987me}, as
+The main hurdle in the computation of tree-level cross sections is the highly complex and peaked matrix element $|\M^2|$ in the integrand,
 \begin{align}\label{eq.LC}
-\sigma_{\rm FC}\sim \int |\M|^2\dd\Phi = \int \sum_{i,j} \A_i C_{ij}\A^*_j \dd\Phi,
+\sigma_{\rm FC}\simeq \int |\M|^2\dd\Phi = \int \sum_{i,j} \A_i C_{ij}\A^*_j \dd\Phi,
 \end{align}
-where the $i,j$ indices label colour orderings of the external QCD particles. The only terms contributing at leading-colour in this colour sum are those with identical colour order, $i=j$ and so the LC-truncated cross section becomes
-\begin{align}
-\sigma_{\rm LC}\sim \int \sum_i \A_i C_{ii}\A^*_i
+where we have suppressed the parton density functions, flux factor and additional factors coming from colour and helicity averages. The integral can be rewritten as a double sum over dual amplitudes $\A_i$ and corresponding colour factors $C_{ij}$~\cite{Mangano:1990by,Berends:1987me}, as denoted by the second equal sign, in which the $i,j$ indices label colour orderings of the external QCD particles. The only terms contributing at leading-colour in this colour sum are those with identical colour order, $i=j$ and so the LC-truncated cross section becomes
+\begin{align}\label{eq.LC2}
+\sigma_{\rm LC}\simeq \int \sum_i \A_i C_{ii}\A^*_i
 \dd\Phi = \sum_{i} C_{ii} \int |\A_i|^2 \dd\Phi.
 \end{align}
-This rewriting of the cross section is used in the proposed algorithm for the integration step: the integrand is approximated at the LC accuracy, as the square of the dual amplitudes, using multi-channeling for each of the orderings. This alleviates a fast integrand evaluation and efficient phase-space integration. The obtained events which pass the generation cuts are unweighted, leading to the sample of LC unweighted events. 
+The two-step event generation proposed in Ref.~\cite{Frederix:2024uvy} starts from generating unweighted events using this LC approximation in the first step, treating each (unique) element in the sum as a separate integration channels.
+
+%This rewriting of the cross section is used in the proposed algorithm for the integration step: the integrand is approximated at the LC accuracy, as the square of the dual amplitudes, using multi-channeling for each of the orderings. This alleviates a fast integrand evaluation and efficient phase-space integration. The obtained events which pass the generation cuts are unweighted, leading to the sample of LC unweighted events. 
 
 In the second step, these LC events are passed through a reweighting algorithm, in which each event is multiplied with the reweight factor
 \begin{equation}\label{eq.rwfactor}
 r^{\LC\to\FC}=\frac{|\M|^2}{\sum_{i} C_{ii}
   |\A_i|^2},
 \end{equation}
-which is a correction factor for obtaining the FC weight. This correction factor is evaluated using the specific kinematics and helicity of each event, in this way obtaining a FC-accurate (weighted) event sample. Finally, a secondary unweighting can be performed, resulting in the FC event generation which finalizes the two-step algorithm for the efficient event generation.
+which is a correction factor for obtaining the FC weight. This correction factor is evaluated using the specific kinematics and helicity of each event, in this way obtaining a FC-accurate (weighted) event sample. Finally, a secondary unweighting is performed in order to obtain equal-weight events.
 
-\subsection{Phase-space integration}
+The main result of Ref.~\cite{Frederix:2024uvy} was that this two-step procedure results in efficient event generation for all-QCD (i.e., multi-jet) processes, because the single elements in the sum of eq.~\ref{eq.LC2} are simple enough that the phase-space parametrisation introduced in Ref.~\cite{Byckling:1969luw} captures the structure of the integrand well if the building blocks are ordered according to the colour ordering of $|\A_i|^2$. This results in competative primary unweighting efficiencies in the LC event generation. Moreover, the reweight factor eq.~\ref{eq.rwfactor} is close to a constant resulting in secondary unweighting efficiencies in the LC$\to$FC reweighting typically well-above 50\%.
 
-For the standard integration of a generic partonic process
-\begin{equation}
-a b \rightarrow 1 2 \ldots n
-\end{equation}
-we use the phase-space parametrisation introduced in Ref.~\cite{Byckling:1969luw} and used in Ref.~\cite{Frederix:2024uvy}. This parametrisation is based on a $2\rightarrow 3$ building block of consecutive momenta generations, following the colour ordering of the particles and maps all relavant variables of the maximally-helicity-violating (MHV) amplitudes~\cite{Parke:1986gb} to integration variables. The phase space integration is split to generate two sets of particles: those between particle $a$ and $b$, and those between $b$ and $a$. The particle kinematics in the two sets are then generated in a way that follows the peak structure of the MHV amplitudes, and therefore also for helicity summed amplitudes, and hence results in an efficient phase-space sampling.
+For this work, we have extended the AmpliCol code developed for Ref.~\cite{Frederix:2024uvy} to allow for any tree-level process generation in the Standard Model (SM), and focus on presenting results for the runtime to generate $10^5$ unweighted events (at full-colour accuracy) for standard-candle SM processes relevant to the LHC. 
 
-For the full LHC process including hadrons and jets, all possible subprocesses (treating the $b$-quark in the requested flavour-scheme) contributing to the requested collision are grouped in common phase-space order blocks. The given colour order of each block is then passed the phase-space generation described in the above, generating the kinematics in the specified order for the particles. The kinematics is then assigned for the different subprocesses in the block. With this method, one reduces overflow of phase-space samplings, improving further the efficiency of the algorithm.
 
-\subsection{Matrix-elements and subprocesses}
+\subsection{Colour singlets}
 
-The dual amplitudes are computed using the off-shell recursion relations, including all particles in the Standard Model. The main contributions to the partonic processes are, whenever present, the all-gluon processes. The subprocesses with quark lines are subdominant, and decrease in dominancy as the number of quark lines grow. Hence, we include the two-quark-line processes as standard to all the hadronic processes, however, the three-quark-line subprocesses are not included in the standard computation. We do, however, an analysis on their impact on the computation time, by including them on the level of the integration (generation of LC events). 
+The main obstacle in the extension of the AmpliCol program from QCD-only processes to the complete SM is the treatment of colour singlets in the generation of the LC events, i.e., the first step of the two-step procedure. The reason is that the order in which the $2\to3$ phase-space blocks introduced in Ref.~\cite{Byckling:1969luw} should be in a one-to-one correspondence with a single colour ordering of the LC amplitudes. In that way, the element of the sum of eq.~\ref{eq.LC2} can be treated as completely independent channels for which the $2\to3$ phase-space blocks form an efficient phase-space parameteriation, as shown in Ref.~\cite{Frederix:2024uvy}. Colour singlets do not directly fit into this picture: a LC approximation does not single out a unique ``ordering'' for colour singlets when there are multiple quark lines and/or multiple colour singlets. Hence, a phase-space parameterisation should be used that takes the possible orderings for the colour singlets into account. For this we adopt a multi-channel approach with weight optimisation, following Ref.~\cite{Kleiss:1994qy}, among all the channels that differ only by the unique positions of the colour singlets in the phase-space ordering, keeping the ordering of all other states fixed.
 
-\TV{Mention color singlet multi-channeling?}
+Similarly to the colour-singlets, for processes with more than two quark lines there is also no longer a unique mapping between the colour-ordering and the the phase-space ordering. This is due to the fact that interchanging two quark lines is no longer equivalent to cyclicly permuting the colour ordering beyond two-quark-line processes. While we also have implemented a multi-channel procedure to deal with three-quark-line processes, in practice our implementation is not very efficient: including the three-quark line processes would seriously deteriorate the results presented below. We have therefore refrained from including them, and leave optimising the AmpliCol code for these type of processes for future work. 
 
-\TV{Mention the decomposition of SF processes?}
+
+%\subsection{Phase-space integration}
+
+%For the standard integration of a generic partonic process
+%\begin{equation}
+%a b \rightarrow 1 2 \ldots n
+%\end{equation}
+%we use the phase-space parametrisation introduced in Ref.~\cite{Byckling:1969luw} and used in Ref.~\cite{Frederix:2024uvy}. This parametrisation is based on a $2\rightarrow 3$ building block of consecutive momenta generations, following the colour ordering of the particles and maps all relavant variables of the maximally-helicity-violating (MHV) amplitudes~\cite{Parke:1986gb} to integration variables. The phase space integration is split to generate two sets of particles: those between particle $a$ and $b$, and those between $b$ and $a$. The particle kinematics in the two sets are then generated in a way that follows the peak structure of the MHV amplitudes, and therefore also for helicity summed amplitudes, and hence results in an efficient phase-space sampling.
+
+%For the full LHC process including hadrons and jets, all possible subprocesses (treating the $b$-quark in the requested flavour-scheme) contributing to the requested collision are grouped in common phase-space order blocks. The given colour order of each block is then passed the phase-space generation described in the above, generating the kinematics in the specified order for the particles. The kinematics is then assigned for the different subprocesses in the block. With this method, one reduces overflow of phase-space samplings, improving further the efficiency of the algorithm.
+
+%\subsection{Matrix-elements and subprocesses}
+
+%The dual amplitudes are computed using the off-shell recursion relations, including all particles in the Standard Model. The main contributions to the partonic processes are, whenever present, the all-gluon processes. The subprocesses with quark lines are subdominant, and decrease in dominancy as the number of quark lines grow. Hence, we include the two-quark-line processes as standard to all the hadronic processes, however, the three-quark-line subprocesses are not included in the standard computation. We do, however, an analysis on their impact on the computation time, by including them on the level of the integration (generation of LC events). 
+
+%\TV{Mention color singlet multi-channeling?}
+
+%\TV{Mention the decomposition of SF processes?}
 
 
 
