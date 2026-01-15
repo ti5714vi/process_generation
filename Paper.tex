@@ -20,6 +20,8 @@
 %\setlength\cellspacebottomlimit{4pt}
 \usepackage{graphicx}
 
+\usepackage{xspace}
+
 %\bibliographystyle{spphys}
 \usepackage{hyperref}
 %\usepackage{dsfont}
@@ -108,9 +110,9 @@
 \newcommand{\A}{\mathcal{A}}
 \newcommand{\dd}{\text{d}}
 
-\newcommand{\MG}{\textsc{MadGraph$\_$aMC@NLO~}}
+\newcommand{\MG}{\textsc{MadGraph$\_$aMC@NLO}\xspace}
 
-\newcommand{\AmpliCol}{\textsc{AmpliCol~}}
+\newcommand{\AmpliCol}{\textsc{AmpliCol}\xspace}
 
 \newcommand{\gen}{gen2$\to$3}
 
@@ -120,7 +122,7 @@
 \begin{document}
 
 
-\title{\textbf{Reducing the scaling complexity for \\ high-multiplcity event generation with \AmpliCol}}
+\title{\textbf{Reducing the scaling complexity for \\ high-multiplcity event generation with AmpliCol}}
 
 \date{}
 \author{
@@ -142,7 +144,7 @@ Timea Vitos$^{2,3}$\footnote{E-mail:  \texttt{timea.vitos@physics.uu.se}},\\
 
 
 \begin{abstract}\noindent
-The scaling of event generation with particle number is a challenge in particle physics. In this work, we target the efficient generation of realistic LHC processes with increasing number of jets in the final state. The main idea relies on a previously developed two-step approach, in which unweighted events are generated at leading-colour accuracy, and then in a second step reweighted to full-colour accuracy, thus remaining efficient in the integration step, but capturing the full-colour accuracy in the hard scattering process. We compare the computation time for four benchmark LHC processes: multi-jet, $t\bar{t}$ plus jets, $ZZ$ plus jets and Drell-Yan plus jets. The results show that the combined timing of generating a fixed number of unweighted events at full-colour accuracy is moderate and scales exponentially with the particle multiplicities we consider, vastly outsourcing the factorial growth in  conventional approaches.
+Efficient generation of high‑multiplicity LHC events is hindered by the rapidly increasing cost of evaluating QCD matrix elements. We build on a recently proposed two‑step strategy in which unweighted events are first generated using the leading‑colour (LC) approximation and then reweighted to full‑colour (FC) accuracy, preserving integration efficiency while recovering the exact FC prediction. In this work we extend the method to general Standard Model processes and present \AmpliCol, a standalone implementation designed for realistic LHC final states. We benchmark multi‑jet, $t\bar{t}$+jets, $ZZ$+jets, and Drell–Yan+jets production, measuring the time required to obtain a fixed number unweighted events at FC accuracy. Across all processes, the runtime exhibits a stable exponential scaling with multiplicity, far milder than the factorial growth of conventional FC generators. This demonstrats that the \AmpliCol code enables efficient event generation at multiplicities that are otherwise computationally prohibitive.
 \end{abstract}
 \thispagestyle{empty}
 \vfill
