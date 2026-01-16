@@ -97,11 +97,11 @@ for pl in range(0,2):
         if (nr == 2): tag=3
         if (nr == 3): tag=1
         if (pl == 1):
-            ax.plot(xp, timings[tag]/100000 , marker='o', color=colors[tag],linestyle='--', 
-                  markersize=4, linewidth=0.4,label=labels[tag])
+            ax.plot(xp, timings[tag]/100000 , marker='o', color=colors[nr],linestyle='--', 
+                  markersize=4, linewidth=0.4,label=labels[nr])
         if (pl == 0):
-            ax.plot(xp, rwgts[tag] , marker='o', color=colors[tag],linestyle='--',
-                  markersize=4, linewidth=0.4,label=labels[tag])
+            ax.plot(xp, rwgts[tag] , marker='o', color=colors[nr],linestyle='--',
+                  markersize=4, linewidth=0.4,label=labels[nr])
 
 axs[0].set_xlabel(r"$n$")
 axs[1].set_xlabel(r"$n$")
